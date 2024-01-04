@@ -5,13 +5,26 @@ const { ZonedDateTime, Duration } = require("@js-joda/core");
 async function run() {
   try {
     const token = core.getInput("token");
+    const repository = core.getInput("repository");
     const numDays = parseInt(core.getInput("days"));
     const octokit = github.getOctokit(token);
     const now = ZonedDateTime.now();
 
+    const splitRepository = repository.split("/");
+    if (
+      splitRepository.length !== 2 ||
+      !splitRepository[0] ||
+      !splitRepository[1]
+    ) {
+      throw new Error(
+        `Invalid repository '${qualifiedRepository}'. Expected format {owner}/{repo}.`
+      );
+    }
+    const repo = { owner: splitRepository[0], repo: splitRepository[1] };
+
     const pulls = await octokit.paginate(
       octokit.rest.pulls.list,
-      { ...github.context.repo, state: "open" },
+      { ...repo, state: "open" },
       (response) =>
         response.data
           .filter(

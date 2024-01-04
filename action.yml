@@ -2,6 +2,9 @@ name: 'Abandoned'
 description: 'Finds old, abandoned PRs in a given repository'
 
 inputs:
+  repository:
+    description: Repository name with owner.
+    default: ${{ github.repository }}
   days:
     description: 'Number of days before PR should be considered abandoned'
     required: false

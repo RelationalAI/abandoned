@@ -13,5 +13,6 @@ jobs:
         uses: RelationalAI/abandoned@main
         with:
           days: 7
+          repository: facebook/react
           token: ${{ github.token }}
       - run: "echo PRs: ${{ steps.abandoned.outputs.pulls }}"

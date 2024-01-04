@@ -5,6 +5,10 @@ This action finds old, abandoned PRs for a given repository.
 ```
 - uses: RelationalAI/abandoned
   with: 
+    # Repository name with owner.
+    # Default: ${{ github.repository }}
+    repository: ''
+
     # Number of days before PR should be considered abandoned
     days: 7
 
