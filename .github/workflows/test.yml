@@ -9,7 +9,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: RelationalAI/abandoned
+      - uses: RelationalAI/abandoned@main
         with:
           days: 7
           token: ${{ github.token }}
