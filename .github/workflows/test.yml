@@ -1,0 +1,15 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: RelationalAI/abandoned
+        with:
+          days: 7
+          token: ${{ github.token }}

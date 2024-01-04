@@ -1,0 +1,19 @@
+name: 'Abandoned'
+description: 'Finds old, abandoned PRs in a given repository'
+
+inputs:
+  days:
+    description: 'Number of days before PR should be considered abandoned'
+    required: false
+    default: '7'
+  token:
+    required: true
+    description: 'GitHub token'
+
+outputs:
+  pulls:
+    description: 'Array of PR objects (title, ref, sha and url)'
+
+runs:
+  using: "node20"
+  main: 'dist/index.js'
