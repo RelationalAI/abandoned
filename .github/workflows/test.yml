@@ -15,4 +15,6 @@ jobs:
           days: 7
           repository: RelationalAI/rai-cli
           token: ${{ github.token }}
-      - run: "echo PRs: ${{ steps.abandoned.outputs.pulls }}"
+      - run: |
+          length=$(jq '. | length' <<< ${{toJson(steps.abandoned.outputs.pulls) }})
+          echo Found $length abandoned PRs
