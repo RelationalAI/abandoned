@@ -9,12 +9,23 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - id: abandoned
+      - name: External Repo
+        id: external
         uses: RelationalAI/abandoned@main
         with:
           days: 7
           repository: RelationalAI/rai-cli
           token: ${{ github.token }}
       - run: |
-          length=$(jq '. | length' <<< ${{toJson(steps.abandoned.outputs.pulls) }})
+          length=$(jq '. | length' <<< ${{toJson(steps.external.outputs.pulls) }})
+          echo Found $length abandoned PRs
+
+      - name: Default Repo
+        id: default
+        uses: RelationalAI/abandoned@main
+        with:
+          days: 7
+          token: ${{ github.token }}
+      - run: |
+          length=$(jq '. | length' <<< ${{toJson(steps.default.outputs.pulls) }})
           echo Found $length abandoned PRs
