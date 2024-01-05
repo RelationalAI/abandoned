@@ -3,7 +3,7 @@ This action finds old, abandoned PRs for a given repository.
 
 # Usage
 ```
-- uses: RelationalAI/abandoned
+- uses: RelationalAI/abandoned@main
   with: 
     # Repository name with owner.
     # Default: ${{ github.repository }}
