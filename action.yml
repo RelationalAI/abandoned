@@ -5,10 +5,18 @@ inputs:
   repository:
     description: Repository name with owner.
     default: ${{ github.repository }}
+  # TODO: remove days after all uses are updated
   days:
     description: 'Number of days before PR should be considered abandoned'
     required: false
     default: '7'
+  minNumberOfDays:
+    description: 'Min of days the PR left stale should be considered abandoned'
+    required: false
+  maxNumberOfDays:
+    description: 'Max of days the PR left stale to be considered abandoned'
+    required: false
+
   token:
     required: true
     description: 'GitHub token'
