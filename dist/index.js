@@ -41338,13 +41338,22 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
-const { ZonedDateTime, Duration } = __nccwpck_require__(2709);
+const {ZonedDateTime, Duration} = __nccwpck_require__(2709);
 
 async function run() {
   try {
     const token = core.getInput("token");
     const repository = core.getInput("repository");
-    const numDays = parseInt(core.getInput("days"));
+    let minNumberOfDays = parseInt(core.getInput("minNumberOfDays"));
+    let maxNumberOfDays = parseInt(core.getInput("maxNumberOfDays"));
+
+    // Backward compatibility: if lastUpdatedBefore && lastUpdatedAfter not provided, then use days
+    if (!minNumberOfDays) {
+      minNumberOfDays = parseInt(core.getInput("days"));
+      maxNumberOfDays = 2 * minNumberOfDays;
+    }
+
+
     const octokit = github.getOctokit(token);
     const now = ZonedDateTime.now();
 
@@ -41358,11 +41367,11 @@ async function run() {
         `Invalid repository '${qualifiedRepository}'. Expected format {owner}/{repo}.`
       );
     }
-    const repo = { owner: splitRepository[0], repo: splitRepository[1] };
+    const repo = {owner: splitRepository[0], repo: splitRepository[1]};
 
     const pulls = await octokit.paginate(
       octokit.rest.pulls.list,
-      { ...repo, state: "open" },
+      {...repo, state: "open"},
       (response) =>
         response.data
           .filter(
@@ -41370,7 +41379,11 @@ async function run() {
               Duration.between(
                 ZonedDateTime.parse(pr.updated_at),
                 now
-              ).toDays() > numDays
+              ).toDays() > minNumberOfDays &&
+              Duration.between(
+                ZonedDateTime.parse(pr.updated_at),
+                now
+              ).toDays() <= maxNumberOfDays
           )
           .map((pr) => ({
             ref: pr.head.ref,
